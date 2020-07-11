@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
 {
     //Number thrown
     private int diceOne;
-    private  int diceTwo;
+    private int diceTwo;
     private int diceThree;
     //Images UI
     public Image diceOneSprite;
@@ -43,7 +43,6 @@ public class EnemyController : MonoBehaviour
     }
     private void Update()
     {
-        hp = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().enemyHP;
         enemyHP.text = hp.ToString();
     }
     void DiceSpriteChange()
@@ -162,5 +161,22 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
         }
+    }
+    public int ModifyHealth(int meleeDamage, int magicDamage)
+    {
+        //Enemy doesn't defend and is being attacked
+        if (enemyAction % 2 == 0)
+        {
+            hp -= (meleeDamage + magicDamage);
+        }
+        //Enemy defends and is being attacked
+        else
+        {
+                if (enemyMelee < meleeDamage)
+                    hp -= (enemyMelee - meleeDamage);
+                if (enemyMagic < magicDamage)
+                    hp -= (enemyMagic - magicDamage);
+        }
+        return this.hp;
     }
 }

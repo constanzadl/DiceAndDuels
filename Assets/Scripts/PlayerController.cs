@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public EnemyController enemy;
     //Check for One Turn
     bool battlePlayed;
     //Text values will be deleted
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        enemyHP = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().hp;
         battlePlayed = false;
         playerHP.text = hp.ToString();
         diceAction.image.sprite = empty;
@@ -359,52 +361,34 @@ public class PlayerController : MonoBehaviour
             enemyAction = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyAction;
             enemyMagic = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMagic;
             enemyMelee = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMelee;
-            enemyHP = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().hp;
-            //Plater Attacks
+            //Player Attacks
+
             if (action % 2 == 0)
             {
-                //EnemyAttacks
-                if (enemyAction % 2 == 0)
-                {
-                    hp -= (enemyMagic + enemyMelee);
-                    enemyHP -= (melee + magic);
-                }
-                //EnemyDefends
-                if (enemyAction % 2 != 0)
-                {
-                    //Player attack is more than enemy defence
-                    if (melee > enemyMelee)
-                    {
-                        enemyHP -= (enemyMelee - melee);
-                    }
-                    if (magic > enemyMagic)
-                    {
-                        enemyHP -= (enemyMagic - magic);
-                    }
-                }
+                //Enemy is being attacked (Can defend or not)
+                enemy.ModifyHealth(melee, magic);
+                //Enemy attacks back
+                hp -= (enemyMagic + enemyMelee);
                 //Next Turn
+                battlePlayed = true;
             }
             //Player Defends
             else
             {
-                //EnemyAttacks
+                //Enemy attacks
                 if (enemyAction % 2 == 0)
                 {
-                    if (enemyMelee > melee)
-                    {
-                        hp -= (melee - enemyMelee);
-                    }
-                    if (enemyMagic > magic)
-                    {
-                        hp -= (magic - enemyMagic);
-                    }
+                    if (melee < enemyMelee)
+                        hp -= (enemyMelee - melee);
+                    if (magic < enemyMagic)
+                        hp -= (enemyMagic - magic);
                 }
-                //EnemyDefends
+                //If both enemy and player defend, nothing happens.
                 //Next Turn
+                battlePlayed = true;
             }
             playerHP.text = hp.ToString();
             //end of turn
-            battlePlayed = false;
         }
 
     }
