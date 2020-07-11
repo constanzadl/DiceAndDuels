@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    //Check for One Turn
+    bool battlePlayed;
     //Text values will be deleted
     public Text diceOneText;
     public Text diceTwoText;
@@ -30,7 +32,8 @@ public class PlayerController : MonoBehaviour
     public Sprite empty;
 
     //Player health
-    public Text hp;
+    public Text playerHP;
+    int hp = 50;
 
     //Number thrown
     private int diceOne;
@@ -45,9 +48,20 @@ public class PlayerController : MonoBehaviour
     //Number to save clicks.
     public int temp;
 
+    //Timer
+    public Text timerText;
+    public float timer;
+
+    //reference for enemyStats
+    public int enemyAction;
+    public int enemyMagic;
+    public int enemyMelee;
+    public int enemyHP;
     // Start is called before the first frame update
     void Start()
     {
+        battlePlayed = false;
+        playerHP.text = hp.ToString();
         diceAction.image.sprite = empty;
         diceMelee.image.sprite = empty;
         diceMagic.image.sprite = empty;
@@ -55,10 +69,21 @@ public class PlayerController : MonoBehaviour
         diceTwo = Random.Range(1, 7);
         diceThree = Random.Range(1, 7);
         DiceSpriteChange();
+        timerText.text = timer.ToString();
     }
     private void Update()
     {
-
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            timerText.text = timer.ToString("#.00");
+        }
+        if (timer <= 0)
+        {
+            timerText.text = "00.00";
+            BattleStart();
+            //turn off buttons (wip)
+        }
     }
     //Delete Text Values
     void DiceSpriteChange()
@@ -235,10 +260,11 @@ public class PlayerController : MonoBehaviour
                 break;
             default:
                 {
-                    diceAction.image.sprite = one;
+                    diceAction.image.sprite = empty;
                 }
                 break;
         }
+        temp = 0;
     }
     public void MeleeDecision()
     {
@@ -277,10 +303,11 @@ public class PlayerController : MonoBehaviour
                 break;
             default:
                 {
-                    diceMelee.image.sprite = one;
+                    diceMelee.image.sprite = empty;
                 }
                 break;
         }
+        temp = 0;
     }
     public void MagicDecision()
     {
@@ -319,9 +346,66 @@ public class PlayerController : MonoBehaviour
                 break;
             default:
                 {
-                    diceMagic.image.sprite = one;
+                    diceMagic.image.sprite = empty;
                 }
                 break;
         }
+        temp = 0;
+    }
+    public void BattleStart()
+    {
+        if (!battlePlayed)
+        {
+            enemyAction = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyAction;
+            enemyMagic = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMagic;
+            enemyMelee = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMelee;
+            enemyHP = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().hp;
+            //Plater Attacks
+            if (action % 2 == 0)
+            {
+                //EnemyAttacks
+                if (enemyAction % 2 == 0)
+                {
+                    hp -= (enemyMagic + enemyMelee);
+                    enemyHP -= (melee + magic);
+                }
+                //EnemyDefends
+                if (enemyAction % 2 != 0)
+                {
+                    //Player attack is more than enemy defence
+                    if (melee > enemyMelee)
+                    {
+                        enemyHP -= (enemyMelee - melee);
+                    }
+                    if (magic > enemyMagic)
+                    {
+                        enemyHP -= (enemyMagic - magic);
+                    }
+                }
+                //Next Turn
+            }
+            //Player Defends
+            else
+            {
+                //EnemyAttacks
+                if (enemyAction % 2 == 0)
+                {
+                    if (enemyMelee > melee)
+                    {
+                        hp -= (melee - enemyMelee);
+                    }
+                    if (enemyMagic > magic)
+                    {
+                        hp -= (magic - enemyMagic);
+                    }
+                }
+                //EnemyDefends
+                //Next Turn
+            }
+            playerHP.text = hp.ToString();
+            //end of turn
+            battlePlayed = false;
+        }
+
     }
 }
