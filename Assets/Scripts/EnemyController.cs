@@ -20,18 +20,14 @@ public class EnemyController : MonoBehaviour
     public Sprite four;
     public Sprite five;
     public Sprite six;
-    //Enemy HP
-    public Text enemyHP;
-    public int hp = 50;
     //Action dice
     public int enemyAction;
     public int enemyMelee;
     public int enemyMagic;
 
     // Start is called before the first frame update
-    void Start()
+    public void StartTurn()
     {
-        enemyHP.text = hp.ToString();
         diceOne = Random.Range(1, 7);
         diceTwo = Random.Range(1, 7);
         diceThree = Random.Range(1, 7);
@@ -40,10 +36,6 @@ public class EnemyController : MonoBehaviour
         enemyAction = diceOne;
         enemyMelee = diceTwo;
         enemyMagic = diceThree;
-    }
-    private void Update()
-    {
-        enemyHP.text = hp.ToString();
     }
     void DiceSpriteChange()
     {
@@ -161,22 +153,5 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
         }
-    }
-    public int ModifyHealth(int meleeDamage, int magicDamage)
-    {
-        //Enemy doesn't defend and is being attacked
-        if (enemyAction % 2 == 0)
-        {
-            hp -= (meleeDamage + magicDamage);
-        }
-        //Enemy defends and is being attacked
-        else
-        {
-                if (enemyMelee < meleeDamage)
-                    hp -= (enemyMelee - meleeDamage);
-                if (enemyMagic < magicDamage)
-                    hp -= (enemyMagic - magicDamage);
-        }
-        return this.hp;
     }
 }

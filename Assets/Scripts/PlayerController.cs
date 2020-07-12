@@ -5,14 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public EnemyController enemy;
-    //Check for One Turn
-    bool battlePlayed;
-    //Text values will be deleted
-    public Text diceOneText;
-    public Text diceTwoText;
-    public Text diceThreeText;
-
     //Dice buttons to click
     public Button diceOneButton;
     public Button diceTwoButton;
@@ -32,38 +24,22 @@ public class PlayerController : MonoBehaviour
     public Sprite six;
     public Sprite empty;
 
-    //Player health
-    public Text playerHP;
-    int hp = 50;
-
     //Number thrown
     private int diceOne;
     private int diceTwo;
     private int diceThree;
 
     //Actions
-    private int melee;
-    private int magic;
+    public int melee;
+    public int magic;
     public int action;
 
     //Number to save clicks.
     public int temp;
 
-    //Timer
-    public Text timerText;
-    public float timer;
-
-    //reference for enemyStats
-    public int enemyAction;
-    public int enemyMagic;
-    public int enemyMelee;
-    public int enemyHP;
     // Start is called before the first frame update
-    void Start()
+    public void StartTurn()
     {
-        enemyHP = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().hp;
-        battlePlayed = false;
-        playerHP.text = hp.ToString();
         diceAction.image.sprite = empty;
         diceMelee.image.sprite = empty;
         diceMagic.image.sprite = empty;
@@ -71,27 +47,10 @@ public class PlayerController : MonoBehaviour
         diceTwo = Random.Range(1, 7);
         diceThree = Random.Range(1, 7);
         DiceSpriteChange();
-        timerText.text = timer.ToString();
-    }
-    private void Update()
-    {
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime;
-            timerText.text = timer.ToString("#.00");
-        }
-        if (timer <= 0)
-        {
-            timerText.text = "00.00";
-            BattleStart();
-            //turn off buttons (wip)
-        }
     }
     //Delete Text Values
     void DiceSpriteChange()
     {
-        //text to check values on UI
-        diceOneText.text = diceOne.ToString();
         switch (diceOne)
         {
             case 1:
@@ -130,7 +89,6 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
         }
-        diceTwoText.text = diceTwo.ToString();
         switch (diceTwo)
         {
             case 1:
@@ -169,7 +127,6 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
         }
-        diceThreeText.text = diceThree.ToString();
         switch (diceThree)
         {
             case 1:
@@ -353,43 +310,5 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         temp = 0;
-    }
-    public void BattleStart()
-    {
-        if (!battlePlayed)
-        {
-            enemyAction = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyAction;
-            enemyMagic = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMagic;
-            enemyMelee = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMelee;
-            //Player Attacks
-
-            if (action % 2 == 0)
-            {
-                //Enemy is being attacked (Can defend or not)
-                enemy.ModifyHealth(melee, magic);
-                //Enemy attacks back
-                hp -= (enemyMagic + enemyMelee);
-                //Next Turn
-                battlePlayed = true;
-            }
-            //Player Defends
-            else
-            {
-                //Enemy attacks
-                if (enemyAction % 2 == 0)
-                {
-                    if (melee < enemyMelee)
-                        hp -= (enemyMelee - melee);
-                    if (magic < enemyMagic)
-                        hp -= (enemyMagic - magic);
-                }
-                //If both enemy and player defend, nothing happens.
-                //Next Turn
-                battlePlayed = true;
-            }
-            playerHP.text = hp.ToString();
-            //end of turn
-        }
-
     }
 }
