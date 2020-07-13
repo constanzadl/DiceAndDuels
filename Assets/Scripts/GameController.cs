@@ -59,18 +59,26 @@ public class GameController : MonoBehaviour
             battleStage = 2;
             player.StartTurn();
             enemy.StartTurn();
-            GetPlayerActions();
-            GetEnemyActions();
         }
         if (timer < 0 && battleStage == 2)
         {
+            GetEnemyActions();
+            GetPlayerActions();
             timerText.text = "00.00";
             BattleStarts();
             //turn off buttons (wip)
         }
         if (battleStage == 3)
         {
-            timerText.text = "End of turn";
+            if (playerLife > 0 && enemyLife > 0)
+            {
+                battleStage = 1;
+                timer = temp;
+            }
+            else
+            {
+                timerText.text = "GameOver";
+            }
         }
         
     }
@@ -88,53 +96,40 @@ public class GameController : MonoBehaviour
         enemyMagic = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMagic;
         enemyMelee = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMelee;
     }
-    //MATH IS WRONG BUT TURN ENDS. HAVE TO FIX BATTLE STARTS AND MODIFY ENEMY HEALTH METHODS.
     void BattleStarts()
     {
-        Debug.Log("battle starts");
-        if (playerAction % 2 == 0)
+        if ((playerAction % 2 == 0) && (enemyAction % 2 == 0))
         {
-            //Enemy is being attacked (Can defend or not)
-            ModifyEnemyHealth(playerMelee, playerMagic);
-            //Enemy attacks back
-            playerLife -= (enemyMagic + enemyMelee);
-            //Next Turn
+            //Both attack
+            playerLife -= (enemyMelee + enemyMagic);
+            enemyLife -= (playerMelee + playerMagic);
             this.battleStage = 3;
         }
-        //Player Defends
+        else if ((playerAction % 2 != 0) && (enemyAction % 2 == 0))
+        {
+            //Player defends, enemy attacks
+            if (playerMelee < enemyMelee)
+                playerLife -= (enemyMelee - playerMelee);
+            if (playerMagic < enemyMagic)
+                playerLife -= (enemyMagic - playerMagic);
+            this.battleStage = 3;
+        }
+        else if ((playerAction % 2 == 0) && (enemyAction % 2 != 0))
+        {
+            //player attacks, enemy defends
+            if (enemyMelee < playerMelee)
+                enemyLife -= (playerMelee - enemyMelee);
+            if (enemyMagic < playerMagic)
+                enemyLife -= (playerMagic - enemyMagic);
+            this.battleStage = 3;
+        }
         else
         {
-            //Enemy attacks
-            if (enemyAction % 2 == 0)
-            {
-                if (playerMelee < enemyMelee)
-                    playerLife -= (enemyMelee - playerMelee);
-                if (playerMagic < enemyMagic)
-                    playerLife -= (enemyMagic - enemyMagic);
-            }
-            //If both enemy and player defend, nothing happens.
-            //Next Turn
+            //Both defend, nothing happens
             this.battleStage = 3;
         }
+        enemyHP.text = enemyLife.ToString();
         playerHP.text = playerLife.ToString();
         //end of turn
-    }
-
-    void ModifyEnemyHealth(int meleeDamage, int magicDamage)
-    {
-        //Enemy doesn't defend and is being attacked
-        if (enemyAction % 2 == 0)
-        {
-            enemyLife -= (meleeDamage + magicDamage);
-        }
-        //Enemy defends and is being attacked
-        else
-        {
-            if (enemyMelee < meleeDamage)
-                enemyLife -= (enemyMelee - meleeDamage);
-            if (enemyMagic < magicDamage)
-                enemyLife -= (enemyMagic - magicDamage);
-        }
-
     }
 }

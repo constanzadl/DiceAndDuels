@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 380464805}
   - component: {fileID: 380464804}
   m_Layer: 0
-  m_Name: GameController
+  m_Name: PlayerController
   m_TagString: PlayerController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -763,10 +763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88e6e625486c294ba20210470535449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  diceOneText: {fileID: 1103778900}
-  diceTwoText: {fileID: 1107955488}
-  diceThreeText: {fileID: 1958465980}
   diceOneButton: {fileID: 792073397}
   diceTwoButton: {fileID: 324615176}
   diceThreeButton: {fileID: 145280107}
@@ -780,15 +776,10 @@ MonoBehaviour:
   five: {fileID: 21300000, guid: 2dda61a4bc726f54ebfcdd93b9965ff7, type: 3}
   six: {fileID: 21300000, guid: 72ad6c97af9cb1643a8a90e46c02fc5f, type: 3}
   empty: {fileID: 0}
-  playerHP: {fileID: 1895508487}
+  melee: 0
+  magic: 0
   action: 0
   temp: 0
-  timerText: {fileID: 592925121}
-  timer: 10
-  enemyAction: 0
-  enemyMagic: 0
-  enemyMelee: 0
-  enemyHP: 0
 --- !u!4 &380464805
 Transform:
   m_ObjectHideFlags: 0
@@ -1904,6 +1895,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107955486}
   m_CullTransparentMesh: 0
+--- !u!1 &1156557116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1156557118}
+  - component: {fileID: 1156557117}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1156557117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156557116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae09e479443e3394c858cc8c2977c65a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 380464804}
+  enemy: {fileID: 1695538682}
+  battleStage: 0
+  playerHP: {fileID: 1895508487}
+  playerLife: 50
+  enemyHP: {fileID: 133943675}
+  enemyLife: 50
+  timerText: {fileID: 592925121}
+  timer: 10
+--- !u!4 &1156557118
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156557116}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -79.44234, y: 476.37207, z: -149.72974}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1215648713
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,8 +2530,6 @@ MonoBehaviour:
   four: {fileID: 21300000, guid: 65b4de9d3ebc70843b2cbe46fd993859, type: 3}
   five: {fileID: 21300000, guid: 2dda61a4bc726f54ebfcdd93b9965ff7, type: 3}
   six: {fileID: 21300000, guid: 72ad6c97af9cb1643a8a90e46c02fc5f, type: 3}
-  enemyHP: {fileID: 133943675}
-  hp: 50
   enemyAction: 0
   enemyMelee: 0
   enemyMagic: 0
