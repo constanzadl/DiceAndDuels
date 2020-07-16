@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     //Number to save clicks.
     public int temp;
 
+    //Action Feedback
+    public Text actionFeedback;
     // Start is called before the first frame update
     public void StartTurn()
     {
@@ -190,39 +192,48 @@ public class PlayerController : MonoBehaviour
             case 1:
                 {
                     diceAction.image.sprite = one;
+                    actionFeedback.text = "Attacking!";
                 }
                 break;
             case 2:
                 {
                     diceAction.image.sprite = two;
+                    actionFeedback.text = "Defending!";
+
                 }
                 break;
             case 3:
                 {
                     diceAction.image.sprite = three;
+                    actionFeedback.text = "Attacking!";
                 }
                 break;
             case 4:
                 {
                     diceAction.image.sprite = four;
+                    actionFeedback.text = "Defending!";
                 }
                 break;
             case 5:
                 {
                     diceAction.image.sprite = five;
+                    actionFeedback.text = "Attacking!";
                 }
                 break;
             case 6:
                 {
                     diceAction.image.sprite = six;
+                    actionFeedback.text = "Defending!";
                 }
                 break;
             default:
                 {
                     diceAction.image.sprite = empty;
+                    actionFeedback.text = "Attacking!";
                 }
                 break;
         }
+
         temp = 0;
     }
     public void MeleeDecision()

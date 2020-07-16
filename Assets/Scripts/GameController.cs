@@ -8,6 +8,9 @@ public class GameController : MonoBehaviour
     public PlayerController player;
     public EnemyController enemy;
 
+    //Start/none/EndOfTurn
+    public Text turnFeedback;
+
     //Turn check
     //1 - start turn
     //2 - battle starts
@@ -41,6 +44,7 @@ public class GameController : MonoBehaviour
         playerHP.text = playerLife.ToString();
         enemyHP.text = enemyLife.ToString();
         timerText.text = timer.ToString();
+        turnFeedback.text = "Start!";
     }
 
     // Update is called once per frame
@@ -49,19 +53,21 @@ public class GameController : MonoBehaviour
         //EnemyController and PlayerController are called to put UI in place
         //Start Turn
         //Start Timer and let player start their turn.
-        if (timer > 0)
+        if (timer > 0 && battleStage != 4)
         {
             timer -= Time.deltaTime;
             timerText.text = timer.ToString("#.00");
         }
         if (battleStage == 1)
         {
+            turnFeedback.text = "Battle!";
             battleStage = 2;
             player.StartTurn();
             enemy.StartTurn();
         }
         if (timer < 0 && battleStage == 2)
         {
+            turnFeedback.text = "";
             GetEnemyActions();
             GetPlayerActions();
             timerText.text = "00.00";
@@ -70,8 +76,19 @@ public class GameController : MonoBehaviour
         }
         if (battleStage == 3)
         {
+            timer -= Time.deltaTime;
+            turnFeedback.text = "End of Turn!";
+            timerText.text = "";
+            if (timer <= 0)
+            {
+                battleStage = 4;
+            }
+        }
+        if (battleStage == 4)
+        {
             if (playerLife > 0 && enemyLife > 0)
             {
+                //Se va a quedar un ratito el letrero ahí? Cuánto tiempo?
                 battleStage = 1;
                 timer = temp;
             }
@@ -98,14 +115,14 @@ public class GameController : MonoBehaviour
     }
     void BattleStarts()
     {
-        if ((playerAction % 2 == 0) && (enemyAction % 2 == 0))
+        if ((playerAction % 2 != 0) && (enemyAction % 2 != 0))
         {
             //Both attack
             playerLife -= (enemyMelee + enemyMagic);
             enemyLife -= (playerMelee + playerMagic);
             this.battleStage = 3;
         }
-        else if ((playerAction % 2 != 0) && (enemyAction % 2 == 0))
+        else if ((playerAction % 2 == 0) && (enemyAction % 2 != 0))
         {
             //Player defends, enemy attacks
             if (playerMelee < enemyMelee)
@@ -114,7 +131,7 @@ public class GameController : MonoBehaviour
                 playerLife -= (enemyMagic - playerMagic);
             this.battleStage = 3;
         }
-        else if ((playerAction % 2 == 0) && (enemyAction % 2 != 0))
+        else if ((playerAction % 2 != 0) && (enemyAction % 2 == 0))
         {
             //player attacks, enemy defends
             if (enemyMelee < playerMelee)
@@ -131,5 +148,6 @@ public class GameController : MonoBehaviour
         enemyHP.text = enemyLife.ToString();
         playerHP.text = playerLife.ToString();
         //end of turn
+        timer = 3;
     }
 }
