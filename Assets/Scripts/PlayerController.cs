@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameController controller;
     //Dice buttons to click
     public Button diceOneButton;
     public Button diceTwoButton;
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public Button diceAction;
     public Button diceMelee;
     public Button diceMagic;
+    public Button diceSkill;
 
     //Dice number sprites
     public Sprite one;
@@ -33,12 +35,14 @@ public class PlayerController : MonoBehaviour
     public int melee;
     public int magic;
     public int action;
+    public int specialAct;
 
     //Number to save clicks.
     public int temp;
 
     //Action Feedback
     public Text actionFeedback;
+
     // Start is called before the first frame update
     public void StartTurn()
     {
@@ -173,16 +177,19 @@ public class PlayerController : MonoBehaviour
     {
         temp = diceOne;
         diceOneButton.image.sprite = empty;
+        diceOneButton.interactable = false;
     }
     public void DecisionMakingTwo()
     {
         temp = diceTwo;
         diceTwoButton.image.sprite = empty;
+        diceTwoButton.interactable = false;
     }
     public void DecisionMakingThree()
     {
         temp = diceThree;
         diceThreeButton.image.sprite = empty;
+        diceThreeButton.interactable = false;
     }
     public void ActionDecision()
     {
@@ -229,11 +236,11 @@ public class PlayerController : MonoBehaviour
             default:
                 {
                     diceAction.image.sprite = empty;
-                    actionFeedback.text = "Attacking!";
+                    action = 0;
                 }
                 break;
         }
-
+        diceAction.interactable = false;
         temp = 0;
     }
     public void MeleeDecision()
@@ -274,9 +281,11 @@ public class PlayerController : MonoBehaviour
             default:
                 {
                     diceMelee.image.sprite = empty;
+                    melee = 0;
                 }
                 break;
         }
+        diceMelee.interactable = false;
         temp = 0;
     }
     public void MagicDecision()
@@ -317,9 +326,50 @@ public class PlayerController : MonoBehaviour
             default:
                 {
                     diceMagic.image.sprite = empty;
+                    magic = 0;
+
                 }
                 break;
         }
+        diceMagic.interactable = false;
         temp = 0;
+    }
+    public void SpecialAction()
+    {
+        if (temp > 3)
+        {
+            specialAct = 0;
+            //Feedback que es mayor a 3 y no se puede 
+        }
+        else
+        {
+            specialAct = temp;
+            switch (temp)
+            {
+                case 1:
+                    {
+                        diceSkill.image.sprite = one;
+                    }
+                    break;
+                case 2:
+                    {
+                        diceSkill.image.sprite = two;
+                    }
+                    break;
+                case 3:
+                    {
+                        diceSkill.image.sprite = three;
+                    }
+                    break;
+                default:
+                    {
+                        diceSkill.image.sprite = empty;
+                        specialAct = 0;
+                    }
+                    break;
+            }
+            diceSkill.interactable = false;
+            temp = 0;
+        }
     }
 }

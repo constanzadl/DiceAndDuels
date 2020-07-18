@@ -18,11 +18,17 @@ public class GameController : MonoBehaviour
     public int battleStage;
 
     //Player Stats
-    public Text playerHP;
-    public int playerLife;
     int playerAction;
     int playerMelee;
     int playerMagic;
+    int specialAction;
+
+    //Stats by Class
+    public Text playerHP;
+    public int playerLife;
+    string playerClass;
+    string skill;
+    int berserkerCoolDown;
 
     //EnemyStats
     public Text enemyHP;
@@ -39,12 +45,17 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetPlayerInitialStats();
         temp = timer;
         battleStage = 1;
         playerHP.text = playerLife.ToString();
         enemyHP.text = enemyLife.ToString();
         timerText.text = timer.ToString();
         turnFeedback.text = "Start!";
+        if (playerClass == "Berserker")
+        {
+            berserkerCoolDown = 8;
+        }
     }
 
     // Update is called once per frame
@@ -99,12 +110,20 @@ public class GameController : MonoBehaviour
         }
         
     }
+    //Get player's class, hp and available skill
+    void GetPlayerInitialStats()
+    {
+        playerLife = GameObject.FindGameObjectWithTag("ClassPicking").GetComponent<ClassStats>().hp;
+        playerClass = GameObject.FindGameObjectWithTag("ClassPicking").GetComponent<ClassStats>().playerClass;
+        skill = GameObject.FindGameObjectWithTag("ClassPicking").GetComponent<ClassStats>().skill;
+    }
     //Get action values from player
     void GetPlayerActions()
     {
         playerAction = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().action;
         playerMagic = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().magic;
         playerMelee = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().melee;
+        specialAction = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().specialAct;
     }
     //Get action values from enemy
     void GetEnemyActions()
@@ -112,9 +131,33 @@ public class GameController : MonoBehaviour
         enemyAction = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyAction;
         enemyMagic = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMagic;
         enemyMelee = GameObject.FindGameObjectWithTag("EnemyController").GetComponent<EnemyController>().enemyMelee;
+
     }
     void BattleStarts()
     {
+        //Berserker cooldown and doubles the attack
+        if (skill == "Double Damage")
+        {
+            if (berserkerCoolDown > 0)
+            {
+                berserkerCoolDown -= specialAction;
+            }
+            else
+            {
+                //double melee
+
+
+            }
+        }
+        //Thief always attacks
+        if (skill == "Hidden dagger")
+        {
+            if (specialAction > 0)
+            {
+                enemyLife -= specialAction;
+            }
+        }
+
         if ((playerAction % 2 != 0) && (enemyAction % 2 != 0))
         {
             //Both attack
