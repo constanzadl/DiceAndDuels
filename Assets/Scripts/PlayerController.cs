@@ -43,9 +43,12 @@ public class PlayerController : MonoBehaviour
     //Action Feedback
     public Text actionFeedback;
 
+    //Player Class
+    string playerClass;
     // Start is called before the first frame update
     public void StartTurn()
     {
+        playerClass = PlayerPrefs.GetString("playerClass");
         diceAction.image.sprite = empty;
         diceMelee.image.sprite = empty;
         diceMagic.image.sprite = empty;
@@ -336,40 +339,81 @@ public class PlayerController : MonoBehaviour
     }
     public void SpecialAction()
     {
-        if (temp > 3)
-        {
-            specialAct = 0;
-            //Feedback que es mayor a 3 y no se puede 
-        }
-        else
-        {
-            specialAct = temp;
-            switch (temp)
+        if (playerClass == "Thief")
             {
-                case 1:
-                    {
-                        diceSkill.image.sprite = one;
-                    }
-                    break;
-                case 2:
-                    {
-                        diceSkill.image.sprite = two;
-                    }
-                    break;
-                case 3:
-                    {
-                        diceSkill.image.sprite = three;
-                    }
-                    break;
-                default:
-                    {
-                        diceSkill.image.sprite = empty;
-                        specialAct = 0;
-                    }
-                    break;
+            if (temp > 3)
+            {
+                specialAct = 0;
+                //Feedback que es mayor a 3 y no se puede 
             }
-            diceSkill.interactable = false;
-            temp = 0;
+            else
+            {
+                specialAct = temp;
+                switch (temp)
+                {
+                    case 1:
+                        {
+                            diceSkill.image.sprite = one;
+                        }
+                        break;
+                    case 2:
+                        {
+                            diceSkill.image.sprite = two;
+                        }
+                        break;
+                    case 3:
+                        {
+                            diceSkill.image.sprite = three;
+                        }
+                        break;
+                    default:
+                        {
+                            diceSkill.image.sprite = empty;
+                            specialAct = 0;
+                        }
+                        break;
+                }
+                diceSkill.interactable = false;
+                temp = 0;
+            }
+        }
+       if (playerClass == "Doctor")
+        {
+            if (temp%2 != 0)
+            {
+                specialAct = 0;
+                //Feedback que no es par y no se puede 
+            }
+            else
+            {
+                specialAct = temp;
+                switch (temp)
+                {
+                    case 2:
+                        {
+                            diceSkill.image.sprite = two;
+                        }
+                        break;
+                    case 4:
+                        {
+                            diceSkill.image.sprite = four;
+                        }
+                        break;
+                    case 6:
+                        {
+                            diceSkill.image.sprite = six;
+                        }
+                        break;
+                    default:
+                        {
+                            diceSkill.image.sprite = empty;
+                            specialAct = 0;
+                        }
+                        break;
+                }
+                diceSkill.interactable = false;
+                temp = 0;
+            }
         }
     }
 }

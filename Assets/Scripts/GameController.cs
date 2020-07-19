@@ -145,8 +145,7 @@ public class GameController : MonoBehaviour
             else
             {
                 //double melee
-
-
+                playerMelee *= 2;
             }
         }
         //Thief always attacks
@@ -157,10 +156,13 @@ public class GameController : MonoBehaviour
                 enemyLife -= specialAction;
             }
         }
-
         if ((playerAction % 2 != 0) && (enemyAction % 2 != 0))
         {
             //Both attack
+            if (skill == "Reflect")
+            {
+                playerMelee -= 2;
+            }
             playerLife -= (enemyMelee + enemyMagic);
             enemyLife -= (playerMelee + playerMagic);
             this.battleStage = 3;
@@ -168,6 +170,14 @@ public class GameController : MonoBehaviour
         else if ((playerAction % 2 == 0) && (enemyAction % 2 != 0))
         {
             //Player defends, enemy attacks
+            if (skill == "Heal")
+            {
+                playerLife += specialAction;
+            }
+            if (skill == "Reflect")
+            {
+                enemyLife -= specialAction;//(int)Mathf.Floor(specialAction / 2);
+            }
             if (playerMelee < enemyMelee)
                 playerLife -= (enemyMelee - playerMelee);
             if (playerMagic < enemyMagic)
