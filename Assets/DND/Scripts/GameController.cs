@@ -36,13 +36,14 @@ public class GameController : MonoBehaviour
     int playerMelee;
     int playerMagic;
     int specialAction;
+    Text actionFeedback;
 
     //Stats by Class
     public Text playerHP;
     public int playerLife;
     string playerClass;
     string skill;
-    int berserkerCoolDown;
+    public int berserkerCoolDown;
     public Text bCoolDown;
 
     //EnemyStats
@@ -67,6 +68,7 @@ public class GameController : MonoBehaviour
         enemyHP.text = enemyLife.ToString();
         timerText.text = timer.ToString();
         turnFeedback.text = "Start!";
+        actionFeedback = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().actionFeedback;
         if (playerClass == "Berserker")
         {
             berserkerCoolDown = 8;
@@ -170,23 +172,31 @@ public class GameController : MonoBehaviour
     }
     void BattleStarts()
     {
+        actionFeedback.text = "";
         //Berserker cooldown and doubles the attack
         if (skill == "Double Damage")
         {
             if (berserkerCoolDown > 0)
             {
                 berserkerCoolDown -= specialAction;
+                if (berserkerCoolDown < 0)
+                {
+                    berserkerCoolDown = 0;
+                }
                 bCoolDown.text = "Cooldown: " + berserkerCoolDown.ToString();
             }
             else
             {
                 //double melee
-                playerMelee *= 2;
-                berserkerCoolDown = 8;
+                if (playerAction % 2 != 0)
+                {
+                    playerMelee = specialAction * 2;
+                    berserkerCoolDown = 8;
+                }
             }
         }
         //Thief always attacks
-        if (skill == "Hidden dagger")
+        else if (skill == "Hidden dagger")
         {
             if (specialAction > 0)
             {

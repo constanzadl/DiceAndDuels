@@ -46,6 +46,9 @@ public class PlayerController : MonoBehaviour
     //Player Class
     string playerClass;
 
+    //Berserker Class
+    int berserkerCooldown;
+
     // Start is called before the first frame update
     public void StartTurn()
     {
@@ -70,6 +73,7 @@ public class PlayerController : MonoBehaviour
         {
             playerFeedback.text = "";
         }
+        berserkerCooldown = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().berserkerCoolDown;
     }
     void DiceSpriteChange()
     {
@@ -125,11 +129,18 @@ public class PlayerController : MonoBehaviour
     }
     public void MeleeDecision()
     {
-        melee = temp;
-        diceMelee.image.sprite = diceSprites[melee];
-        diceMelee.interactable = false;
-        temp = 0;
-        numberChosen.text = " ";
+        if (berserkerCooldown == 0 && specialAct != 0)
+        {
+            diceMelee.interactable = false;
+        }
+        else
+        {
+            melee = temp;
+            diceMelee.image.sprite = diceSprites[melee];
+            diceMelee.interactable = false;
+            temp = 0;
+            numberChosen.text = " ";
+        }
     }
     public void MagicDecision()
     {
