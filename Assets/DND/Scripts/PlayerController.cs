@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public GameController controller;
+
     //Dice buttons to click
     public Button diceOneButton;
     public Button diceTwoButton;
@@ -18,13 +19,7 @@ public class PlayerController : MonoBehaviour
     public Button diceSkill;
 
     //Dice number sprites
-    public Sprite one;
-    public Sprite two;
-    public Sprite three;
-    public Sprite four;
-    public Sprite five;
-    public Sprite six;
-    public Sprite empty;
+    public Sprite[] diceSprites;
 
     //Number thrown
     private int diceOne;
@@ -38,382 +33,134 @@ public class PlayerController : MonoBehaviour
     public int specialAct;
 
     //Number to save clicks.
-    public int temp;
+    int temp = 0;
 
-    //Action Feedback
+    //Text counter
+    float counter;
+
+    //Text Feedback
     public Text actionFeedback;
+    public Text numberChosen;
+    public Text playerFeedback;
 
     //Player Class
     string playerClass;
+
     // Start is called before the first frame update
     public void StartTurn()
     {
         playerClass = PlayerPrefs.GetString("playerClass");
-        diceAction.image.sprite = empty;
-        diceMelee.image.sprite = empty;
-        diceMagic.image.sprite = empty;
+        diceAction.image.sprite = diceSprites[0];
+        diceMelee.image.sprite = diceSprites[0];
+        diceMagic.image.sprite = diceSprites[0];
+        diceSkill.image.sprite = diceSprites[0];
         diceOne = Random.Range(1, 7);
         diceTwo = Random.Range(1, 7);
         diceThree = Random.Range(1, 7);
         DiceSpriteChange();
+        diceMelee.interactable = false;
+        diceMagic.interactable = false;
+        diceSkill.interactable = false;
     }
     //Delete Text Values
+    private void Update()
+    {
+        counter -= Time.deltaTime;
+        if (counter <= 0)
+        {
+            playerFeedback.text = "";
+        }
+    }
     void DiceSpriteChange()
     {
-        switch (diceOne)
-        {
-            case 1:
-                {
-                    diceOneButton.image.sprite = one;
-                }
-                break;
-            case 2:
-                {
-                    diceOneButton.image.sprite = two;
-                }
-                break;
-            case 3:
-                {
-                    diceOneButton.image.sprite = three;
-                }
-                break;
-            case 4:
-                {
-                    diceOneButton.image.sprite = four;
-                }
-                break;
-            case 5:
-                {
-                    diceOneButton.image.sprite = five;
-                }
-                break;
-            case 6:
-                {
-                    diceOneButton.image.sprite = six;
-                }
-                break;
-            default:
-                {
-                    diceOneButton.image.sprite = one;
-                }
-                break;
-        }
-        switch (diceTwo)
-        {
-            case 1:
-                {
-                    diceTwoButton.image.sprite = one;
-                }
-                break;
-            case 2:
-                {
-                    diceTwoButton.image.sprite = two;
-                }
-                break;
-            case 3:
-                {
-                    diceTwoButton.image.sprite = three;
-                }
-                break;
-            case 4:
-                {
-                    diceTwoButton.image.sprite = four;
-                }
-                break;
-            case 5:
-                {
-                    diceTwoButton.image.sprite = five;
-                }
-                break;
-            case 6:
-                {
-                    diceTwoButton.image.sprite = six;
-                }
-                break;
-            default:
-                {
-                    diceTwoButton.image.sprite = one;
-                }
-                break;
-        }
-        switch (diceThree)
-        {
-            case 1:
-                {
-                    diceThreeButton.image.sprite = one;
-                }
-                break;
-            case 2:
-                {
-                    diceThreeButton.image.sprite = two;
-                }
-                break;
-            case 3:
-                {
-                    diceThreeButton.image.sprite = three;
-                }
-                break;
-            case 4:
-                {
-                    diceThreeButton.image.sprite = four;
-                }
-                break;
-            case 5:
-                {
-                    diceThreeButton.image.sprite = five;
-                }
-                break;
-            case 6:
-                {
-                    diceThreeButton.image.sprite = six;
-                }
-                break;
-            default:
-                {
-                    diceThreeButton.image.sprite = one;
-                }
-                break;
-        }
+        diceOneButton.image.sprite = diceSprites[diceOne];
+        diceTwoButton.image.sprite = diceSprites[diceTwo];
+        diceThreeButton.image.sprite = diceSprites[diceThree];
     }
     //Which dice was clicked 
     public void DecisionMakingOne()
     {
-        temp = diceOne;
-        diceOneButton.image.sprite = empty;
-        diceOneButton.interactable = false;
+        if (temp == 0)
+        {
+            temp = diceOne;
+            numberChosen.text = "Number: " + diceOne.ToString();
+            diceOneButton.image.sprite = diceSprites[0];
+            diceOneButton.interactable = false;
+        }
     }
     public void DecisionMakingTwo()
     {
-        temp = diceTwo;
-        diceTwoButton.image.sprite = empty;
-        diceTwoButton.interactable = false;
+        if (temp == 0)
+        {
+            temp = diceTwo;
+            numberChosen.text = "Number: " + diceTwo.ToString();
+            diceTwoButton.image.sprite = diceSprites[0];
+            diceTwoButton.interactable = false;
+        }
     }
     public void DecisionMakingThree()
     {
-        temp = diceThree;
-        diceThreeButton.image.sprite = empty;
-        diceThreeButton.interactable = false;
+        if (temp == 0)
+        {
+            numberChosen.text = "Number: " + diceThree.ToString();
+            temp = diceThree;
+            diceThreeButton.image.sprite = diceSprites[0];
+            diceThreeButton.interactable = false;
+        }
     }
     public void ActionDecision()
     {
         action = temp;
-        switch (temp)
-        {
-            case 1:
-                {
-                    diceAction.image.sprite = one;
-                    actionFeedback.text = "Attacking!";
-                }
-                break;
-            case 2:
-                {
-                    diceAction.image.sprite = two;
-                    actionFeedback.text = "Defending!";
-
-                }
-                break;
-            case 3:
-                {
-                    diceAction.image.sprite = three;
-                    actionFeedback.text = "Attacking!";
-                }
-                break;
-            case 4:
-                {
-                    diceAction.image.sprite = four;
-                    actionFeedback.text = "Defending!";
-                }
-                break;
-            case 5:
-                {
-                    diceAction.image.sprite = five;
-                    actionFeedback.text = "Attacking!";
-                }
-                break;
-            case 6:
-                {
-                    diceAction.image.sprite = six;
-                    actionFeedback.text = "Defending!";
-                }
-                break;
-            default:
-                {
-                    diceAction.image.sprite = empty;
-                    action = 0;
-                }
-                break;
-        }
+        diceAction.image.sprite = diceSprites[action];
+        if (temp % 2 == 0)
+            actionFeedback.text = "Defending!";
+        else
+            actionFeedback.text = "Attacking!";
         diceAction.interactable = false;
         temp = 0;
+        diceMelee.interactable = true;
+        diceMagic.interactable = true;
+        diceSkill.interactable = true;
+        numberChosen.text = " ";
     }
     public void MeleeDecision()
     {
         melee = temp;
-        switch (temp)
-        {
-            case 1:
-                {
-                    diceMelee.image.sprite = one;
-                }
-                break;
-            case 2:
-                {
-                    diceMelee.image.sprite = two;
-                }
-                break;
-            case 3:
-                {
-                    diceMelee.image.sprite = three;
-                }
-                break;
-            case 4:
-                {
-                    diceMelee.image.sprite = four;
-                }
-                break;
-            case 5:
-                {
-                    diceMelee.image.sprite = five;
-                }
-                break;
-            case 6:
-                {
-                    diceMelee.image.sprite = six;
-                }
-                break;
-            default:
-                {
-                    diceMelee.image.sprite = empty;
-                    melee = 0;
-                }
-                break;
-        }
+        diceMelee.image.sprite = diceSprites[melee];
         diceMelee.interactable = false;
         temp = 0;
+        numberChosen.text = " ";
     }
     public void MagicDecision()
     {
         magic = temp;
-        switch (temp)
-        {
-            case 1:
-                {
-                    diceMagic.image.sprite = one;
-                }
-                break;
-            case 2:
-                {
-                    diceMagic.image.sprite = two;
-                }
-                break;
-            case 3:
-                {
-                    diceMagic.image.sprite = three;
-                }
-                break;
-            case 4:
-                {
-                    diceMagic.image.sprite = four;
-                }
-                break;
-            case 5:
-                {
-                    diceMagic.image.sprite = five;
-                }
-                break;
-            case 6:
-                {
-                    diceMagic.image.sprite = six;
-                }
-                break;
-            default:
-                {
-                    diceMagic.image.sprite = empty;
-                    magic = 0;
-
-                }
-                break;
-        }
+        diceMagic.image.sprite = diceSprites[magic];
         diceMagic.interactable = false;
         temp = 0;
+        numberChosen.text = " ";
     }
     public void SpecialAction()
     {
-        if (playerClass == "Thief")
-            {
-            if (temp > 3)
-            {
-                specialAct = 0;
-                //Feedback que es mayor a 3 y no se puede 
-            }
-            else
-            {
-                specialAct = temp;
-                switch (temp)
-                {
-                    case 1:
-                        {
-                            diceSkill.image.sprite = one;
-                        }
-                        break;
-                    case 2:
-                        {
-                            diceSkill.image.sprite = two;
-                        }
-                        break;
-                    case 3:
-                        {
-                            diceSkill.image.sprite = three;
-                        }
-                        break;
-                    default:
-                        {
-                            diceSkill.image.sprite = empty;
-                            specialAct = 0;
-                        }
-                        break;
-                }
-                diceSkill.interactable = false;
-                temp = 0;
-            }
-        }
-       if (playerClass == "Doctor")
+        if (playerClass == "Thief" && temp > 3)
         {
-            if (temp%2 != 0)
-            {
-                specialAct = 0;
-                //Feedback que no es par y no se puede 
-            }
-            else
-            {
-                specialAct = temp;
-                switch (temp)
-                {
-                    case 2:
-                        {
-                            diceSkill.image.sprite = two;
-                        }
-                        break;
-                    case 4:
-                        {
-                            diceSkill.image.sprite = four;
-                        }
-                        break;
-                    case 6:
-                        {
-                            diceSkill.image.sprite = six;
-                        }
-                        break;
-                    default:
-                        {
-                            diceSkill.image.sprite = empty;
-                            specialAct = 0;
-                        }
-                        break;
-                }
-                diceSkill.interactable = false;
-                temp = 0;
-            }
+            Debug.Log(playerClass);
+            Debug.Log(temp);
+            specialAct = 0;
+            playerFeedback.text = "Number must be 3 or less.";
+            counter = 2;
+        }
+        else if (playerClass == "Doctor" && temp % 2 != 0)
+        {
+            specialAct = 0;
+            playerFeedback.text = "Number must be even.";
+            counter = 2;
+        }
+        else
+        {
+            specialAct = temp;
+            diceSkill.image.sprite = diceSprites[specialAct];
+            diceSkill.interactable = false;
+            temp = 0;
         }
     }
 }

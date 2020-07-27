@@ -43,6 +43,7 @@ public class GameController : MonoBehaviour
     string playerClass;
     string skill;
     int berserkerCoolDown;
+    public Text bCoolDown;
 
     //EnemyStats
     public Text enemyHP;
@@ -69,6 +70,7 @@ public class GameController : MonoBehaviour
         if (playerClass == "Berserker")
         {
             berserkerCoolDown = 8;
+            bCoolDown.text = "Cooldown: " + berserkerCoolDown.ToString();
         }
     }
 
@@ -85,14 +87,18 @@ public class GameController : MonoBehaviour
         }
         if (battleStage == 1)
         {
-            turnFeedback.text = "Battle!";
+            turnFeedback.text = "Choose your action!";
             battleStage = 2;
             player.StartTurn();
             enemy.StartTurn();
         }
+        playerAction = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().action;
+        if (playerAction != 0)
+        {
+            turnFeedback.text = " ";
+        }
         if (timer < 0 && battleStage == 2)
         {
-            turnFeedback.text = "";
             GetEnemyActions();
             GetPlayerActions();
             timerText.text = "00.00";
@@ -170,12 +176,13 @@ public class GameController : MonoBehaviour
             if (berserkerCoolDown > 0)
             {
                 berserkerCoolDown -= specialAction;
-                berserkerCoolDown = 8;
+                bCoolDown.text = "Cooldown: " + berserkerCoolDown.ToString();
             }
             else
             {
                 //double melee
                 playerMelee *= 2;
+                berserkerCoolDown = 8;
             }
         }
         //Thief always attacks
@@ -206,7 +213,7 @@ public class GameController : MonoBehaviour
             }
             if (skill == "Reflect")
             {
-                enemyLife -= specialAction;//(int)Mathf.Floor(specialAction / 2);
+                enemyLife -= (int)Mathf.Floor(specialAction / 2);
             }
             if (playerMelee < enemyMelee)
                 playerLife -= (enemyMelee - playerMelee);
