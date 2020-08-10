@@ -143,9 +143,12 @@ public class GameController : MonoBehaviour
     //Get player's class, hp and available skill
     void GetPlayerInitialStats()
     {
+        //Stats by class
         playerLife = GameObject.FindGameObjectWithTag("ClassPicking").GetComponent<ClassStats>().hp;
         playerClass = GameObject.FindGameObjectWithTag("ClassPicking").GetComponent<ClassStats>().playerClass;
         skill = GameObject.FindGameObjectWithTag("ClassPicking").GetComponent<ClassStats>().skill;
+
+        //Stats by turn
         diceOneButton = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().diceOneButton;
         diceTwoButton = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().diceTwoButton;
         diceThreeButton = GameObject.FindGameObjectWithTag("PlayerController").GetComponent<PlayerController>().diceThreeButton;

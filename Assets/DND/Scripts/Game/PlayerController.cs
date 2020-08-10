@@ -82,51 +82,7 @@ public class PlayerController : MonoBehaviour
         diceThreeButton.image.sprite = diceSprites[diceThree];
     }
     //Which dice was clicked 
-    public void DecisionMakingOne()
-    {
-        if (temp == 0)
-        {
-            temp = diceOne;
-            numberChosen.text = "Number: " + diceOne.ToString();
-            diceOneButton.image.sprite = diceSprites[0];
-            diceOneButton.interactable = false;
-        }
-    }
-    public void DecisionMakingTwo()
-    {
-        if (temp == 0)
-        {
-            temp = diceTwo;
-            numberChosen.text = "Number: " + diceTwo.ToString();
-            diceTwoButton.image.sprite = diceSprites[0];
-            diceTwoButton.interactable = false;
-        }
-    }
-    public void DecisionMakingThree()
-    {
-        if (temp == 0)
-        {
-            numberChosen.text = "Number: " + diceThree.ToString();
-            temp = diceThree;
-            diceThreeButton.image.sprite = diceSprites[0];
-            diceThreeButton.interactable = false;
-        }
-    }
-    public void ActionDecision()
-    {
-        action = temp;
-        diceAction.image.sprite = diceSprites[action];
-        if (temp % 2 == 0)
-            actionFeedback.text = "Defending!";
-        else
-            actionFeedback.text = "Attacking!";
-        diceAction.interactable = false;
-        temp = 0;
-        diceMelee.interactable = true;
-        diceMagic.interactable = true;
-        diceSkill.interactable = true;
-        numberChosen.text = " ";
-    }
+
     public void MeleeDecision()
     {
         if (berserkerCooldown == 0 && specialAct != 0)

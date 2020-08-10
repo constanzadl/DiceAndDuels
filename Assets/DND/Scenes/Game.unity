@@ -229,6 +229,7 @@ MonoBehaviour:
   hp: 0
   skill: 
   playerClass: 
+  specialAction: {fileID: 2018213435}
 --- !u!4 &41968777
 Transform:
   m_ObjectHideFlags: 0
@@ -1719,7 +1720,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 9.18356e-40, w: -3.11e-43}
+  m_BoundingSphereOverride: {x: 0, y: 1e-45, z: 3.451e-42, w: 1.05e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -4315,8 +4316,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -18, y: -402}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -128, y: -385}
+  m_SizeDelta: {x: 80.029, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2018213435
 MonoBehaviour:
@@ -4344,15 +4345,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Special
-
-    Action'
+  m_Text: 
 --- !u!222 &2018213436
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4607,19 +4606,32 @@ PrefabInstance:
     - target: {fileID: 5522929431475770712, guid: 67695a2748aa618409d914bef9b48cbe,
         type: 3}
       propertyPath: m_Text
-      value: 'Special
-
-        Action'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5522929431475770712, guid: 67695a2748aa618409d914bef9b48cbe,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5522929431475770712, guid: 67695a2748aa618409d914bef9b48cbe,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5522929431475770713, guid: 67695a2748aa618409d914bef9b48cbe,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -402
+      value: -385
       objectReference: {fileID: 0}
     - target: {fileID: 5522929431475770713, guid: 67695a2748aa618409d914bef9b48cbe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -18
+      value: -128
+      objectReference: {fileID: 0}
+    - target: {fileID: 5522929431475770713, guid: 67695a2748aa618409d914bef9b48cbe,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80.029
       objectReference: {fileID: 0}
     - target: {fileID: 5522929431475945220, guid: 67695a2748aa618409d914bef9b48cbe,
         type: 3}
